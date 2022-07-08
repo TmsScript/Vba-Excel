@@ -1,0 +1,29 @@
+Sub controllo()
+    Dim i As Integer
+    Dim count As Integer
+    Dim oreTot As Integer
+    
+    Range("I1:I10000").ClearContents
+    Range("M10").Value = "Tutto Ok"
+    
+    For Each Cell In Range("C1:C10000")
+        If Cell <> "" Then
+            count = 0
+            oreTot = 0
+            For Each Cellc In Range("C1:C10000")
+                If Cell.Address() <> Cellc.Address() And Cell.Value = Cellc.Value Then
+                    count = count + 1
+                        If count > 1 Then
+                            oreTot = oreTot + Cellc.Offset(0, 1).Value
+                        Else: oreTot = Cell.Offset(0, 1).Value + Cellc.Offset(0, 1).Value
+                        End If
+                        If oreTot > 8 Then
+                            Cell.Offset(0, 6).Value = "Ore sforate (" & oreTot & ")"
+                            Range("M10").ClearContents
+                        End If
+                End If
+            Next Cellc
+        End If
+    Next Cell
+
+End Sub
